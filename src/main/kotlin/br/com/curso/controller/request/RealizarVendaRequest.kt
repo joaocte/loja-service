@@ -6,6 +6,5 @@ data class RealizarVendaRequest(
 
     val nomeCliente : String,
     val idVeiculos : List<Long>,
-    val valorCompra : BigDecimal,
-    val numeroParcelas : Int
+    val numeroParcelas : Long
     )
