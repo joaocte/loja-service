@@ -1,11 +1,20 @@
 package br.com.curso.infrastructure.model
 
+import io.micronaut.data.annotation.GeneratedValue
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.serde.annotation.SerdeImport
+import io.micronaut.serde.annotation.Serdeable
 import java.math.BigDecimal
 
-data class VendaModel (
-    val id: Long,
+
+@MappedEntity()
+@Serdeable.Deserializable
+@Serdeable.Serializable
+data class VendaModel (@field:Id @GeneratedValue
+    val id: String?,
     val nomeCliente : String,
-    val veiculos : List<VeiculoModel>,
+    val veiculo : VeiculoModel,
     val valor : BigDecimal,
     val parcelas : List<ParcelaModel>
 )

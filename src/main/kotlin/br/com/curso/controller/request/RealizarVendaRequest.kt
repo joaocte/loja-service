@@ -5,6 +5,6 @@ import java.math.BigDecimal
 data class RealizarVendaRequest(
 
     val nomeCliente : String,
-    val idVeiculos : List<Long>,
+    val idVeiculo : Long,
     val numeroParcelas : Long
     )

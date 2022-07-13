@@ -1,8 +1,15 @@
 package br.com.curso.infrastructure.model
 
+import io.micronaut.data.annotation.Id
+import io.micronaut.serde.annotation.Serdeable
 import java.math.BigDecimal
 
-class VeiculoModel(val id : Long,
+
+@Serdeable.Deserializable
+@Serdeable.Serializable
+data class VeiculoModel(
+
+    val id : Long,
                    val modelo : String,
                    val marca : String,
                    val anoFabricacao : String,

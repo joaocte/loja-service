@@ -1,4 +1,4 @@
 package br.com.curso.exception.custoException
 
-class NotFoundException() : RuntimeException() {
+class NotFoundException(s: String) : RuntimeException() {
 }

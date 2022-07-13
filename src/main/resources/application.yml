@@ -8,3 +8,9 @@ netty:
   default:
     allocator:
       max-order: 3
+mongodb:
+  uri: mongodb://localhost:27017/VendaMS
+
+kafka:
+  bootstrap:
+    servers: localhost:29092
