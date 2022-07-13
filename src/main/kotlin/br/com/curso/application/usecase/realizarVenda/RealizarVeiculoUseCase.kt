@@ -35,13 +35,13 @@ class RealizarVeiculoUseCase (
 
        val valorParcela = veiculo.valor.divide(cadastrarVeiculoCommand.numeroParcelas.toBigDecimal(), RoundingMode.HALF_UP)
 
-       val data = LocalDate.now()
+       var data = LocalDate.now().plusMonths(1)
 
        for (i in 1.. cadastrarVeiculoCommand.numeroParcelas)
        {
            var parcela = Parcela(i,valorParcela, data)
           parcelas =  parcelas.plus(parcela)
-           data.plusMonths(1)
+           data = data.plusMonths(1)
        }
        var venda = Venda(id= null,cadastrarVeiculoCommand.nomeCliente, veiculo.toDomain(), veiculo.valor, parcelas)
 
