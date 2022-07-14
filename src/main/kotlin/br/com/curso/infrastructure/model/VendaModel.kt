@@ -8,7 +8,7 @@ import io.micronaut.serde.annotation.Serdeable
 import java.math.BigDecimal
 
 
-@MappedEntity()
+@MappedEntity("venda")
 @Serdeable.Deserializable
 @Serdeable.Serializable
 data class VendaModel (@field:Id @GeneratedValue

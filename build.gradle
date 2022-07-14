@@ -26,10 +26,11 @@ dependencies {
     annotationProcessor("io.micronaut.data:micronaut-data-document-processor")
     implementation("io.micronaut.data:micronaut-data-mongodb")
     implementation("io.micronaut.kafka:micronaut-kafka")
+    implementation("io.micronaut.discovery:micronaut-discovery-client")
+
     runtimeOnly("org.mongodb:mongodb-driver-sync")
     runtimeOnly("mysql:mysql-connector-java")
     runtimeOnly("ch.qos.logback:logback-classic")
-
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
 }

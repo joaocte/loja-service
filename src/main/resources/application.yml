@@ -2,7 +2,7 @@ micronaut:
   application:
     name: lojaService
   server:
-    port: 8081
+    port: -1
 
 netty:
   default:
@@ -14,3 +14,9 @@ mongodb:
 kafka:
   bootstrap:
     servers: localhost:29092
+
+consul:
+  client:
+    registration:
+      enabled: true
+    defaultZone: "localhost:8500"

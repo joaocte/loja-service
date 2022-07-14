@@ -18,42 +18,50 @@ import java.math.RoundingMode
 import java.time.LocalDate
 
 @Singleton
-class RealizarVeiculoUseCase (
+class RealizarVeiculoUseCase(
     private val veiculoService: IVeiculoService,
-    private val  repository : IVendaRepository,
+    private val repository: IVendaRepository,
     private val objectMapper: ObjectMapper,
-    private val producer : IVendaProducer
+    private val producer: IVendaProducer,
 
-                              ) : IRealizarVendaUseCase {
-   override fun execute(cadastrarVeiculoCommand: RealizarVendaCommand) : RealizarVendaCommandResponse{
+    ) : IRealizarVendaUseCase {
+    override fun execute(cadastrarVeiculoCommand: RealizarVendaCommand): RealizarVendaCommandResponse {
 
-       var parcelas : List<Parcela> = ArrayList()
+        var parcelas: List<Parcela> = ArrayList()
 
-           val veiculo = veiculoService.obterVeiculoPorId(cadastrarVeiculoCommand.idVeiculo)
-               ?: throw NotFoundException("Veiculo não encontrado com o ID ${cadastrarVeiculoCommand.idVeiculo}")
-
-
-       val valorParcela = veiculo.valor.divide(cadastrarVeiculoCommand.numeroParcelas.toBigDecimal(), RoundingMode.HALF_UP)
-
-       var data = LocalDate.now().plusMonths(1)
-
-       for (i in 1.. cadastrarVeiculoCommand.numeroParcelas)
-       {
-           var parcela = Parcela(i,valorParcela, data)
-          parcelas =  parcelas.plus(parcela)
-           data = data.plusMonths(1)
-       }
-       var venda = Venda(id= null,cadastrarVeiculoCommand.nomeCliente, veiculo.toDomain(), veiculo.valor, parcelas)
-
-       var vendaModel = venda.toModel()
-
-       var vendaDatabase = repository.save(vendaModel)
+        val veiculo = veiculoService.obterVeiculoPorId(cadastrarVeiculoCommand.idVeiculo)
+            ?: throw NotFoundException("Veiculo não encontrado com o ID ${cadastrarVeiculoCommand.idVeiculo}")
 
 
-       var event = objectMapper.writeValueAsString(vendaDatabase)
+        val valorParcela =
+            veiculo.valor.divide(cadastrarVeiculoCommand.numeroParcelas.toBigDecimal(), RoundingMode.HALF_UP)
 
-       producer.send(vendaDatabase.id.toString(), event)
+        var data = LocalDate.now().plusMonths(1)
 
-       return RealizarVendaCommandResponse(vendaDatabase.id!!, cadastrarVeiculoCommand.nomeCliente, cadastrarVeiculoCommand.numeroParcelas, vendaDatabase.valor, parcelas)
+        for (i in 1..cadastrarVeiculoCommand.numeroParcelas) {
+
+            var parcela = Parcela(i, valorParcela, data)
+            parcelas = parcelas.plus(parcela)
+            data = data.plusMonths(1)
+
+        }
+        var venda = Venda(id = null, cadastrarVeiculoCommand.nomeCliente, veiculo.toDomain(), veiculo.valor, parcelas)
+
+        var vendaModel = venda.toModel()
+
+        var vendaDatabase = repository.save(vendaModel)
+
+
+        var event = objectMapper.writeValueAsString(vendaDatabase)
+
+        producer.send(vendaDatabase.id.toString(), event)
+
+        return RealizarVendaCommandResponse(
+            vendaDatabase.id!!,
+            cadastrarVeiculoCommand.nomeCliente,
+            cadastrarVeiculoCommand.numeroParcelas,
+            vendaDatabase.valor,
+            parcelas
+        )
     }
 }
